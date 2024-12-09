@@ -7,7 +7,7 @@
       :formatter="formatTwoDigits"
       v-model="number1"
       @return="focusAmount"
-      ref="input1"
+      ref="numberInput"
       :showError="showError && !isValidNumber"
     />
     <BaseInput
@@ -37,6 +37,12 @@ export default Vue.extend({
   components: {
     BaseInput
   },
+  props: {
+    editingEntry: {
+      type: Object as () => BetEntry | null,
+      default: null
+    }
+  },
   data() {
     return {
       number1: '',
@@ -44,36 +50,12 @@ export default Vue.extend({
       showError: false
     };
   },
-  methods: {
-    formatTwoDigits,
-    formatAmount,
-    focusAmount() {
-      (this.$refs.amountInput as any).nativeView.focus();
-    },
-    submit() {
-      if (this.isValid) {
-        this.$emit('submit', this.getData());
-        this.clear();
-        (this.$refs.input1 as any).nativeView.focus();
-      } else {
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 800);
+  watch: {
+    editingEntry(entry: BetEntry | null) {
+      if (entry) {
+        this.number1 = entry.number1;
+        this.amount = entry.amount;
       }
-    },
-    clear() {
-      this.number1 = '';
-      this.amount = '';
-      this.showError = false;
-      (this.$refs.input1 as any).clear();
-      (this.$refs.amountInput as any).clear();
-    },
-    getData(): BetEntry {
-      return {
-        number1: this.number1,
-        amount: this.amount
-      };
     }
   },
   computed: {
@@ -85,6 +67,37 @@ export default Vue.extend({
     },
     isValid(): boolean {
       return this.isValidNumber && this.isValidAmount;
+    }
+  },
+  methods: {
+    formatTwoDigits,
+    formatAmount,
+    focusAmount() {
+      (this.$refs.amountInput as any).nativeView.focus();
+    },
+    submit() {
+      if (this.isValid) {
+        this.$emit('submit', {
+          number1: this.number1,
+          amount: this.amount
+        });
+        this.clear();
+        (this.$refs.numberInput as any).nativeView.focus();
+      } else {
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 800);
+      }
+    },
+    clear() {
+      this.number1 = '';
+      this.amount = '';
+      this.showError = false;
+    },
+    setData(entry: BetEntry) {
+      this.number1 = entry.number1;
+      this.amount = entry.amount;
     }
   }
 });
