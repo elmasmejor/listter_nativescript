@@ -8,6 +8,10 @@ const mutations = {
     Object.assign(state, settings);
     saveSettings(state);
   },
+  UPDATE_LAST_SYNC(state: AppSettings, timestamp: string) {
+    state.lastSync = timestamp;
+    saveSettings(state);
+  },
   RESET_SETTINGS(state: AppSettings) {
     Object.assign(state, getSettings());
   }

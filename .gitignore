@@ -15,6 +15,7 @@ yarn-error.log*
 .AppleDouble
 .LSOverride
 .idea
+.idea/*
 .cloud
 .project
 tmp/
