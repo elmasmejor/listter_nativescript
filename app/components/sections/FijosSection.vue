@@ -3,11 +3,11 @@
     <ScrollView>
       <StackLayout class="section-content">
         <GridLayout v-for="(entry, index) in entries" :key="entry.id" 
-                   rows="auto" columns="auto,*,auto" class="entry-row"
+                   rows="auto" columns="auto,*,*" class="entry-row"
                    @longPress="showDialog(entry)">
           <Label :text="entry.number1" col="0" class="number-label"/>
-          <Label :text="entry.number2" col="1" class="number-label ml-2"/>
-          <CircleNumber :text="entry.amount" col="2"/>
+          <CircleNumber v-if="entry.amount1" :text="entry.amount1" col="1"/>
+          <CircleNumber v-if="entry.amount2" :text="entry.amount2" col="2"/>
         </GridLayout>
       </StackLayout>
     </ScrollView>
@@ -18,7 +18,6 @@
 import Vue from 'vue';
 import { BetEntry } from '../../types';
 import CircleNumber from '../common/CircleNumber.vue';
-import { Frame } from '@nativescript/core';
 import EntryActionDialog from '../dialogs/EntryActionDialog.vue';
 
 export default Vue.extend({
@@ -39,7 +38,7 @@ export default Vue.extend({
         animated: true,
         stretched: false,
         props: {
-          title: `${entry.number1}${entry.number2 ? ' - ' + entry.number2 : ''}`
+          title: `${entry.number1} (F:${entry.amount1 || '-'}/C:${entry.amount2 || '-'})`
         }
       }).then((action?: string) => {
         if (action === 'edit') {

@@ -34,7 +34,11 @@ const getters = {
       ...state.fijos,
       ...state.parles,
       ...state.centenas
-    ].reduce((sum, bet) => sum + parseFloat(bet.amount), 0);
+    ].reduce((sum, bet) => {
+      const amount1 = parseFloat(bet.amount1 || '0');
+      const amount2 = parseFloat(bet.amount2 || '0');
+      return sum + amount1 + amount2;
+    }, 0);
     
     return Number((totalBets * 0.05).toFixed(2));
   }

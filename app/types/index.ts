@@ -1,8 +1,8 @@
 export interface BetEntry {
   id?: number;
   number1: string;
-  number2?: string;
-  amount: string;
+  amount1?: string;
+  amount2?: string;
 }
 
 export interface GameState {

@@ -28,3 +28,5 @@ typings/
 !.vscode/launch.json
 !.vscode/extensions.json
 *.jks
+
+App_Resources
